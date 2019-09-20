@@ -2,14 +2,32 @@ import java.net.{URL, HttpURLConnection, SocketTimeoutException}
 import java.io.IOException
 import net.liftweb.json._
 
-class Carbooking() {
+class Carbooking(numPassengersInput: Integer) {
+
+  val numPassengers = numPassengersInput
 
   implicit val formats = DefaultFormats
   case class CarOption(cat_type: String, price: Integer)
   case class CarResponse(supplier_id: String, pickup: String, dropoff: String, options: List[CarOption])
 
-  def parseJsonOptions(rawjson: String): List {
-    val m = json.extract[CarResponse]
+  def filterByPassengers(optionslist: List[(String, Integer)], numPassengers: Integer): List[(String, Integer)] = {
+    optionslist.filter(_.parseJsonOptions)
+  }
+  def filterTest(inp: (String, Integer)): Boolean = {
+    val capacities = List((4, ["STANDARD", "EXECUTIVE", "LUXURY"]), 
+                      (6, ["PEOPLE_CARRIER","LUXURY_PEOPLE_CARRIER"]),
+                      (16, ["MINIBUS"]))
+    var typeid: Integer = -1
+    for (c <- capacities) {
+      if (c._2.contains(inp._1)) typeid = c._2.indexOf(inp._1)
+    }
+    if (numPassengers <= capacities[typeid]._1) true
+    else false
+  }
+
+  def parseJsonOptions(rawjson: String): List[(String, Integer)] {
+    val jsonobj = json.extract[CarResponse]
+    jsonobj.options
   }
 
   def getRideData(supplier: String, pickup: String, dropoff: String): (String, Boolean) = {
