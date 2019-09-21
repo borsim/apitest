@@ -1,6 +1,8 @@
+package com.borsim
+
 import java.net.{URL, HttpURLConnection, SocketTimeoutException}
 import java.io.IOException
-import net.liftweb.json._
+import net.liftweb.json
 
 class Carbooking(numPassengersInput: Integer) {
 
@@ -11,13 +13,13 @@ class Carbooking(numPassengersInput: Integer) {
   case class CarResponse(supplier_id: String, pickup: String, dropoff: String, options: List[CarOption])
 
   def filterByPassengers(optionslist: List[(String, String, Integer)]): List[(String, String, Integer)] = {
-    optionslist.filter(_.parseJsonOptions)
+    optionslist.filter(filterTest(_))
   }
   def filterTest(inp: (String, String, Integer)): Boolean = {
-    // If the list of capacity types get large an array might be warranted but that sounds unreasonable
-    val capacities = List((4, ["STANDARD", "EXECUTIVE", "LUXURY"]), 
-                      (6, ["PEOPLE_CARRIER","LUXURY_PEOPLE_CARRIER"]),
-                      (16, ["MINIBUS"]))
+    // If the list of capacity types get large an array might be warranted but that sounds unreasonable.
+    val capacities = List((4, List("STANDARD", "EXECUTIVE", "LUXURY")), 
+                      (6, List("PEOPLE_CARRIER","LUXURY_PEOPLE_CARRIER")),
+                      (16, List("MINIBUS")))
     var typeid: Integer = -1
     for (c <- capacities) {
       if (c._2.contains(inp._1)) typeid = c._2.indexOf(inp._1)
@@ -26,10 +28,10 @@ class Carbooking(numPassengersInput: Integer) {
     else false
   }
 
-  def parseJsonOptions(rawjson: String): List[(String, String, Integer)] {
+  def parseJsonOptions(rawjson: String): List[(String, String, Integer)] = {
     val jsonobj = json.extract[CarResponse]
     var listWithSupplier: List[(String, String, Integer)] = Nil
-    for (o <- in jsonobj.options) {
+    for (o <- jsonobj.options) {
       val newTuple = (o._1, jsonobj.supplier, o._2)
       listWithSupplier = newTuple :: listWithSupplier
     }
@@ -39,15 +41,22 @@ class Carbooking(numPassengersInput: Integer) {
   def getRideData(supplier: String, pickup: String, dropoff: String): (String, Boolean) = {
     val param1 = "pickup"
     val param2 = "dropoff"
-    val paramstring = "?" + param1 + "=" pickup + "&" + param2 + "=" + dropoff
+    val timeoutvalue = "Response timed out"
+    val paramstring = "?" + param1 + "=" + pickup + "&" + param2 + "=" + dropoff
     val querystring: String = "https://techtest.rideways.com/" + supplier + paramstring
     try {
       val content = getRequest(querystring)
       (content, true)
     } catch {
-      case ioe: java.io.IOException =>  println("Error reading data from API.")
-      case ste: java.net.SocketTimeoutException => println("API connection timed out. Please try again later.")
-      val timeoutvalue = "Response timed out"
+      case ioe: java.io.IOException => {
+        println("Error reading data from API.")
+        (timeoutvalue, false) 
+        }
+      case ste: java.net.SocketTimeoutException => {
+        println("API connection timed out. Please try again later.")
+        (timeoutvalue, false)
+      }
+      
       (timeoutvalue, false)
     }
   }

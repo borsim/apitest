@@ -1,0 +1,10 @@
+[0m[[0m[31merror[0m] [0m[0m/mnt/e/CS/bookingtechtest/Carbooking.scala:5:8: not found: object net[0m
+[0m[[0m[31merror[0m] [0m[0mimport net.liftweb.json[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/mnt/e/CS/bookingtechtest/Carbooking.scala:11:26: not found: value DefaultFormats[0m
+[0m[[0m[31merror[0m] [0m[0m  implicit val formats = DefaultFormats[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/mnt/e/CS/bookingtechtest/Carbooking.scala:32:19: not found: value json[0m
+[0m[[0m[31merror[0m] [0m[0m    val jsonobj = json.extract[CarResponse][0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m
