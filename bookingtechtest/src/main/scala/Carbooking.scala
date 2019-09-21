@@ -8,7 +8,7 @@ class Carbooking() {
 
   implicit val formats = net.liftweb.json.DefaultFormats
   case class CarOption(car_type: String, price: Integer)
-  case class CarResponse(supplier_id: String, pickup: String, dropoff: String, options: List[CarOption])
+  case class CarResponse(supplier_id: String, pickup: String, dropoff: String, options: List[CarOption]) 
 
   def filterByPassengers(numPassengers: Integer, optionslist: List[(String, String, Integer)]): List[(String, String, Integer)] = {
     optionslist.filter(filterTest(numPassengers, _))
