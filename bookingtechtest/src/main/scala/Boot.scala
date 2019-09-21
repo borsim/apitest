@@ -1,3 +1,5 @@
+package bootstrap.liftweb
+
 import net.liftweb.http.LiftRules
 import com.borsim.CarAPI
 
