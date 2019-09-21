@@ -1,5 +1,5 @@
-package com.borsim
 import net.liftweb.http.LiftRules
+import com.borsim.CarAPI
 
 class Boot
 {

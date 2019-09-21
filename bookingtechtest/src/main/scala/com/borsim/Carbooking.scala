@@ -2,6 +2,7 @@ package com.borsim
 
 import java.net.{URL, HttpURLConnection, SocketTimeoutException}
 import java.io.IOException
+import net.liftweb.common._
 import net.liftweb.json
 
 class Carbooking() {
