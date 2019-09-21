@@ -20,7 +20,12 @@ Notes:
 - No reliance on there always being some kind of data
 
 # Part 2
-I extended Main.scala, created Boot.scala and RestHelper.scala to create the API. Everything is fine except conversion of the results into a json payload. The serve function has been commented out to keep the rest of the program free of syntax errors.
-Attempting to resolve that has taken longer than expected due to unfamiliarity with the topic but I hope to succeed by Sunday.
+To run the server:
+- sbt
+- jetty:start
 
-Sample request: .../api/car?pickup=3.410632,-2.157533&dropoff=3.410632,-2.157533&passengers=5
+I extended Main.scala, created Boot.scala and RestHelper.scala to have an API.
+It supports GET with parameters in the same way as the command line version.
+
+Sample request: 
+http://localhost:8080/api/car?pickup=3.410632,-2.157533&dropoff=3.410632,-2.157533&passengers=5
